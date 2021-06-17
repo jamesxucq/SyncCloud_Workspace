@@ -1,0 +1,23 @@
+<html>
+<head>
+	<title>osev/csp demo</title>
+</head>
+<body>
+<%  # xxxxxxxxxxxxxxxxxxxxxxxxxxx
+	@include "aaa.h"
+	# xxxxxxxxxxxxxxxxxxxxxxxxxxx
+	@include_once "abc.h"
+	# xxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+	int num; 
+	for(num=0x00; 5 > num; num++) {
+%>
+	<p>Hello world. </p>
+<%}%>
+	<p><% =$num %></p>
+	<%e static int px; e%>
+	<%h int px[10]; h%>
+	<% @require "req.csp" %>
+	<% @require "req.csp" %>
+</body>
+</html>

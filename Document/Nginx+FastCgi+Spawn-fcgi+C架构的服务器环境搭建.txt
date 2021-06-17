@@ -1,0 +1,66 @@
+Nginx+FastCgi+Spawn-fcgi+C架构的服务器环境搭建
+
+1.Nginx
+
+1.1.安装
+Nginx 的中文维基 http://wiki.codemongers.com/NginxChs加载中... 下载 Nginx 0.6.26（开发版）（请下载最新版本）tar zxvf nginx-0.6.26.tar.gz./configure，注意了类似checking for *** ... not found项，可能是依赖包没有，则需要安装依赖包缺少PCRE，yum install pcre安装。或者去：http://www.pcre.org/如果缺少OpenSSL，yum install libssl-dev，或者去：http://www.openssl.org如果缺少zlib，可以yum install zlib1g，或者http://www.zlib.net/make & make install建议安装在/usr/local/nginx下
+1.2 启动
+/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+
+2.FastCGI开发库安装 2.1 安装fastcgi库 下载://www.fastcgi.com/dist/fcgi.tar.gz ./configure
+make
+make install 
+2.2 示例程序
+
+#include <fcgi_stdio.h>
+int main( int argc, char *argv[] )
+{
+  while( FCGI_Accept() >= 0 )
+  {
+      FCGI_printf( "Status: 200 OK\r\n" );
+      FCGI_printf( "Content-Type: text/html\r\n\r\n" );
+      FCGI_printf( "Hello world in +++++++\n" );
+  }
+  return 0;
+}</fcgi_stdio.h>
+
+
+编译后的二进制程序为t.cgi 
+3.spawn-fcgi
+
+先有必要有这样第一个认识：ngxin作为一个webserver，本身并不包含CGI的解释器，需要通过一个中间件【例如php-fpm】来运行CGI。他们之间的模式大致是：
+nginx <-- socket --> php-fpm-------->php 
+那么nginx既然要运行c写的CGI那么也应该有类似php-fpm的东西。baidu, google了下，发现有一个spawn-fcgi的东西。原本是lighttp 内的fastcgi进程管理器
+3.1 安装 spawn-fcgi
+
+wget   http://www.lighttpd.net/download/lighttpd-1.4.19.tar.gz
+tar zxvf  lighttpd-1.4.19.tar.gz    
+cd  lighttpd-1.4.19
+./configure
+make
+
+
+
+
+复制 编译好的spawn-fcgi到 nginx目录，很主要！！！！
+
+cp ./src/spawn-fcgi /usr/local/nginx/sbin/
+
+
+3.2 启动spawn-fcgi
+
+spawn-fcgi -a 127.0.0.1 -p 7000 -f /home/jiangf/t.cgi
+
+4.配置nginx.conf
+
+location ~ \.cgi$
+  {
+        fastcgi_pass  127.0.0.1:7000;
+        fastcgi_index index.cgi;
+        fastcgi_param SCRIPT_FILENAME /scripts$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+
+
+最后在浏览器中输入 http://192.168.19.103:9990/1.cgi

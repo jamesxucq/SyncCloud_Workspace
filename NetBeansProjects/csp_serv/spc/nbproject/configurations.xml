@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="97">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles" displayName="头文件" projectFiles="true">
+      <itemPath>astyle.h</itemPath>
+      <itemPath>builder.h</itemPath>
+      <itemPath>common.h</itemPath>
+      <itemPath>compile.h</itemPath>
+      <itemPath>conv.h</itemPath>
+      <itemPath>inte.h</itemPath>
+      <itemPath>invoke.h</itemPath>
+      <itemPath>line_type.h</itemPath>
+      <itemPath>logger.h</itemPath>
+      <itemPath>map_key.h</itemPath>
+      <itemPath>middle.h</itemPath>
+      <itemPath>parser.h</itemPath>
+      <itemPath>qcgi_inte.h</itemPath>
+      <itemPath>qmap.h</itemPath>
+      <itemPath>utility.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
+      <itemPath>astyle.c</itemPath>
+      <itemPath>builder.c</itemPath>
+      <itemPath>compile.c</itemPath>
+      <itemPath>conv.c</itemPath>
+      <itemPath>inte.c</itemPath>
+      <itemPath>invoke.c</itemPath>
+      <itemPath>line_type.c</itemPath>
+      <itemPath>logger.c</itemPath>
+      <itemPath>map_key.c</itemPath>
+      <itemPath>middle.c</itemPath>
+      <itemPath>parser.c</itemPath>
+      <itemPath>qcgi_inte.c</itemPath>
+      <itemPath>qmap.c</itemPath>
+      <itemPath>spc.c</itemPath>
+      <itemPath>utility.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles" displayName="资源文件" projectFiles="true">
+      <itemPath>csptest.csp</itemPath>
+      <itemPath>req.csp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="测试文件"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="重要文件"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <commandLine>-Wall -D_LARGEFILE64_SOURCE -D_FILEOFFSET_BITS==64</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>-Wall -D_LARGEFILE64_SOURCE -D_FILEOFFSET_BITS==64</commandLine>
+        </ccTool>
+      </compileType>
+      <item path="astyle.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="astyle.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="builder.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="builder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="common.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="compile.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="compile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="conv.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="conv.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="csptest.csp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inte.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="inte.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="invoke.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="invoke.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="line_type.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="line_type.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="logger.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="map_key.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="map_key.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="middle.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="middle.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="parser.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="qcgi_inte.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="qcgi_inte.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="qmap.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="qmap.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="req.csp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="spc.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="utility.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="utility.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="astyle.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="astyle.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="builder.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="builder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="common.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="compile.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="compile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="conv.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="conv.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="csptest.csp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inte.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="inte.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="invoke.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="invoke.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="line_type.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="line_type.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="logger.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="map_key.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="map_key.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="middle.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="middle.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="parser.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="qcgi_inte.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="qcgi_inte.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="qmap.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="qmap.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="req.csp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="spc.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="utility.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="utility.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

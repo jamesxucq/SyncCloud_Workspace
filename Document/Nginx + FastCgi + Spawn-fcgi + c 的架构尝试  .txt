@@ -1,0 +1,72 @@
+Nginx + FastCgi + Spawn-fcgi + c 的架构尝试  
+
+2012-07-18 17:19:58|  分类： c天堂 |  标签：fastcgi  cgi  c  nginx   |举报|字号 订阅
+    
+  下载LOFTER我的照片书  |
+Php写的很有段时间了，最近看公司一些关键的后端CGI都是用C写的，以lighthttp 最为server 。忽然也有种学习用C写CGI的想法。虽然php结合php-fpm的fastcgi模式也有不错的性能，反正多学一种东西又有和不可以呢？何况，某些情况下C的性能还是php无法比拟的。
+
+先有必要有这样第一个认识：ngxin作为一个webserver，本身并不包含CGI的解释器，需要通过一个中间件【例如php-fpm】来运行CGI。他们之间的模式大致是：
+      nginx   <--   socket   -->   php-fpm-------->php  
+那么nginx既然要运行c写的CGI那么也应该有类似php-fpm的东西。baidu, google了下，发现有一个spawn-fcgi的东西。原本是lighttp 内的fastcgi进程管理器。 于是又搜索了下，折腾了一个下午，终于抛出了经典的hello world !!!   。下面是具体步骤：
+大致分为5步：
+1、安装Spawn-fcgi    【启动cgi的时候需要】
+wget   http://www.lighttpd.net/download/lighttpd-1.4.19.tar.gz
+tar zxvf  lighttpd-1.4.19.tar.gz    
+cd  lighttpd-1.4.19
+./configure
+make
+
+复制 编译好的spawn-fcgi到 nginx目录，很主要！！！！
+cp ./src/spawn-fcgi /usr/local/nginx/sbin/
+
+
+2、安装fastcgi库:: 【提供编写cgi时的类库】
+wget  http://www.fastcgi.com/dist/fcgi.tar.gz
+tar zxvf  fcgi.tar.gz
+cd  fcgi
+./configure
+make
+make install
+
+
+
+3、测试代码::
+#include <fcgi_stdio.h>
+int main( int argc, char *argv[] )
+{
+  while( FCGI_Accept() >= 0 )
+  {
+      FCGI_printf( "Status: 200 OK\r\n" );
+      FCGI_printf( "Content-Type: text/html\r\n\r\n" );
+      FCGI_printf( "Hello world in C\n" );
+  }
+  return 0;
+}
+
+编译：：
+
+g++ -o test.cgi test.cpp -L /usr/local/lib/ -lfcgi 
+
+
+4、启动Spawn-fcgi::
+
+
+spawn-fcgi  -a 127.0.0.1 -p 7000 -u www  -f   /data/cgi-bin/test.cgi
+如果报：   error while loading shared libraries: libfcgi.so.0: cannot open shared object file: No such file or directory  
+请执行如下命令：为了这个错误，折腾了很长时间哦！
+cp /usr/local/lib/libfcgi.so.0   /usr/lib
+
+
+5、配置nginx.conf
+  location ~ \.cgi$
+  {
+        fastcgi_pass  127.0.0.1:7000;
+        fastcgi_index index.cgi;
+        fastcgi_param SCRIPT_FILENAME /scripts$fastcgi_script_name;
+        include fastcgi_params;
+    }
+重启nginx
+service nginx restart
+
+我的系统是ubuntu server版。 具体要依情况而定。   
+收工！！！！

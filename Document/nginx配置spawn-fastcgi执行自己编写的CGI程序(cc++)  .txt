@@ -1,0 +1,52 @@
+nginx配置spawn-fastcgi执行自己编写的CGI程序(c/c++)  
+1. nginx安装（略过）
+2. FastCGI安装
+因为nginx不能直接执行外部的cgi程序，我们可使用lighttpd中的spawn-fastcgi来让nginx可支持外部cgi运行。也有另外一种方法安装nginx-fcgi来让nginx支持cgi,我们这里讲解一种使用spawn-fastcgi的方法。
+1) 下载http://www.lighttpd.net/download/lighttpd-1.4.19.tar.gz
+./configure 
+make
+编译完成后将spawn-cgi拷贝到nginx/sbin目录
+cp ./src/spawn-fcgi /usr/local/nginx/sbin/
+注：spawn-fastcgi已经成功单独的一个项目，也可单独下载http://www.lighttpd.net/download/spawn-fcgi-1.6.2.tar.gz
+2） 安装fastcgi库
+我们编写cgi程序需要使用该库的接口，当然如果技术很NB的话可以不需要库直接自己写。
+下载http://www.fastcgi.com/dist/fcgi.tar.gz
+./configure
+make
+make install
+3） 编写一个简单的CGI程序
+程序源码下载：http://www.liuzhigong.com/download/testcgi.c
+#include <iostream> 
+#include <fcgi_stdio.h> 
+#include <stdlib.h> 
+int main() 
+{
+int count = 0;
+while(FCGI_Accept() >= 0){
+printf("Content-type: text/html\r\n"
+"\r\n"
+""
+"FastCGI Hello!"
+"Request number %d running on host%s "
+"Process ID: %d\n", ++count, getenv("SERVER_NAME"), getpid());
+}
+return 0;
+}
+
+编译程序：g++ testcgi.c -o lzgFastCGI  -lfcgi
+测试程序是否能正常运行：./myFastCGI，如果能正常运行则说明程序没有问题，如果出现缺少库libfcgi.so.0，则自己需要手动把/usr/local/lib/libfcgi.so.0库建立一个链接到/usr/lib/目录下：ln -s /usr/local/libfcgi.so.0 /usr/lib/
+
+3. nginx配置、测试
+1） 拷贝lzgFastCGI程序到nginx下的cgibin目录（自己可以创建，根据需要更改）
+2) 启动spawn-fastcgi管理进程
+/usr/local/nginx/sbin/spawn-fcgi -a 127.0.0.1 -p 9002 -C 25 -f /usr/local/nginx/cgibin/lzgFastCGI
+查看一下9002端口是否已成功：netstat -na | grep 9002
+3） 更改nginx.conf配置文件
+添加配置
+location ~ \.cgi$ {
+fastcgi_pass 127.0.0.1:9002;
+fastcgi_index index.cgi;
+fastcgi_param SCRIPT_FILENAME fcgi$fastcgi_script_name;
+include fastcgi_params;
+}
+4) 重启nginx，打开http://****/1.cgi，可得到正确运行，如图所示：

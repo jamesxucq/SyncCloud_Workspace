@@ -1,0 +1,8 @@
+<%$echo("%s", "fuck you");%>
+<%e static int sx=1; e%>
+<%h int head = 8; h%>
+<p>Hello world. </p>
+<p><% =$head %></p>
+<%$echo("%d %d", head, sx);%>
+<%$echo "fuck yooooou";%>
+<%qcgireq_parse_bzl(Q_CGI_POST);%>

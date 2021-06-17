@@ -1,0 +1,91 @@
+[实践Ok]通过spawn-fcgi管理命令行直接启动PHP的fastCGI程序，fastCGI加入监控拉起功能备案。  不指定
+justwinit 2013-7-5 15:49   大 | 中 | 小  
+WEB2.0 ? PHP/JS/Shell 评论(0)
+背景：Apache结合spawn-fcgi使用FastCGI的实践，和PHP启动fastCGI一个原理。
+关于PHP的相关情况参考：使用spawn-fcgi管理运行php-cgi  Url： http://www.libaqiang.com/?p=78193
+
+spawn-fcgi和nginx自带的fastcgi相比 有什么优势？
+为什么在用nginx的时候还要装spawn-fcgi，nginx不是自带有这个模块吗？ 
+nginx的fastcgi_pass模块是用于代理fcgi协议的后端。spawn-fcgi用于管理支持fcgi协议的进程，属于process manager这类，免于重造轮子。
+对于PHP，推荐php-fpm，比spawn多了不少专门针对php的功能，例如slow_request等。 
+http://www.zhihu.com/question/19689162
+
+
+一）这个用spawn-fcgi 来管理FastCGI 以达到优化Apache 下PHP性能的方法比较另类，大家权当一种参考。
+
+方法：系统平台是CentOS 5，前提是LAMP已配置好，运行正常。
+
+1. wget -c http://www.21andy.com/centos/5/i386/spawn-fcgi-1.6.3-1.el5.i386.rpm（也可以去官方下载源码包编译安装：http://www.lighttpd.net/download/spawn-fcgi-1.6.3.tar.gz）
+2. rpm -ivh spawn-fcgi-1.6.3-1.el5.i386.rpm
+3. 使用spawn-fcgi来控制php-cgi的FastCGI进程：
+/usr/bin/spawn-fcgi -a 127.0.0.1 -p 9000 -C 5 -u apache -g apache -f /usr/bin/php-cgi
+
+参数含义如下：
+-f <fcgiapp> 指定调用FastCGI的进程的执行程序位置，根据系统上所装的PHP的情况具体设置。
+-a <addr> 绑定到地址addr。
+-p <port> 绑定到端口port。
+-s <path> 绑定到unix socket的路径path。
+-C <childs> 指定产生的FastCGI的进程数，默认为5。（仅用于PHP）
+-P <path> 指定产生的进程的PID文件路径。
+-u和-g FastCGI使用什么身份（-u 用户 -g 用户组）运行，CentOS下可以使用apache用户，其他的根据情况配置，如nobody、www-data等。
+4. 将这行代码加入到/etc/rc.local文件底部，这样系统启动的时候就可以同时启动PHP的FastCGI进程。
+
+
+实践内容：
+实践来源：http://www.phpabc.cn/apachejie-he-spawn-fcgishi-yong-fastcgi.html
+(1)通过spawn-fcgi来启动php进程
+/usr/local/webserver/fastcgi/spawn-fcgi/bin/spawn-fcgi  -a 127.0.0.1 -p 9000 -C 5 -u apache -g www -f /usr/local/webserver/php/bin/php-cgi          
+spawn-fcgi: child spawned successfully: PID: 7551
+
+ps aux|grep php
+apache    7551 16.7  1.6  43396  6016 ?        Ssl  15:14   0:01 /usr/local/webserver/php/bin/php-cgi
+
+cd lighttpd_fastCGI_Codes/
+./configure && make && make install
+/usr/bin/install -c spawn-fcgi '/usr/local/bin'
+启动PHP：
+/usr/local/bin/spawn-fcgi  -a 127.0.0.1 -p 9000 -C 5 -u apache -g www -f /usr/local/webserver/php/bin/php-cgi
+root@192.168.137.128:~/software/lighttpd_fastCGI_Codes# ps aux|grep php  //共5个
+www       9754  4.0  2.4  45112  8588 ?        Ss   15:50   0:00 /usr/local/webserver/php/bin/php-cgi
+www       9756  0.0  1.1  45112  3988 ?        S    15:50   0:00 /usr/local/webserver/php/bin/php-cgi
+www       9757  0.0  1.1  45112  3988 ?        S    15:50   0:00 /usr/local/webserver/php/bin/php-cgi
+
+(2)要是自己编写一个fastcgi呢？简单如下操作（这儿好像不能像PHP一样有多个进程：fastcgi 多进程这部分，我还没研究到。可以有空再看看）：
+代码编写：
+vi hello.c
+
+#include <fcgi_stdio.h>
+int main(void){
+    while( FCGI_Accept() >= 0){
+        printf( "Content-Type: text/html\r\n" );
+        printf("\r\n");
+        printf( "Hello world in C\n" );
+    }
+}
+
+
+
+编译：
+gcc -o hello.fcgi hello.c -L /usr/local/webserver/fastcgi/fcgi/lib -lfcgi
+/usr/local/webserver/fastcgi/spawn-fcgi/bin/spawn-fcgi  -a 127.0.0.1 -p 9000 -C 5 -u apache -g www -f ./hello.fcgi
+
+启动成功没：
+root@192.168.137.128:/usr/local/test# ps aux|grep hello
+apache   10485  0.0  0.1   2140   416 ?        Ss   16:31   0:00 ./hello.fcgi
+
+至于后面的ngnx配置，无非两种：
+一个是直接连sock，另一个是开9002端口两者对比效率上哪个高一点儿呢？
+一般来说本地的 unix sock要快一些。
+
+
+参考Url：
+http://blog.csdn.net/qzier_go/article/details/7340868
+http://terry831010.blog.163.com/blog/static/6916117120126185428827/
+
+二）spawn-fcgi与fcgi的运行机制分析 ：在此基础上实现了守护监控功能
+http://blog.csdn.net/cleanfield/article/details/6412723
+
+
+作者：justwinit@向东博客 专注WEB应用 构架之美 --- 构架之美，在于尽态极妍 | 应用之美，在于药到病除
+地址：http://www.justwinit.cn/post/6513/
+版权所有。转载时必须以链接形式注明作者和原始出处及本声明！

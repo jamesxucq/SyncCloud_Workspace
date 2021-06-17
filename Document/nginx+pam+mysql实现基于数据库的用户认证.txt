@@ -1,0 +1,178 @@
+nginx+pam+mysql实现基于数据库的用户认证
+
+博客分类： RubyOnRails
+MySQLnginxSecurityDebian软件测试 
+HTTP Auth Basic模块是个很好用的模块，使用它可以零编码实现一个用户认证体系，参见： 
+
+http://sudone.com/nginx/nginx_ssl.html 
+
+Auth Basic模块有个缺点，就是它是用htpasswd文件方式来实现认证的，在更新频繁的环境或跨服务器时，文件方式操作起来就非常麻烦，因此，就催生出了新的方式：PAM，用PAM可以直接从数据库验证用户名密码，这样就不用折腾那htpasswd文件了。 
+
+PAM可看作一个用户、权限认证方面的接口，利用它可以在认证程序和密码存储程序之间建立起一个桥梁。类似于fastcgi，它并不局限于某个软件，不单只。 
+
+nginx本身并不支持PAM，由PAM模块提供此项功能，PAM模块是一个第三方模块，需要另外下载安装。 
+
+一、安装软件 
+
+需要安装的软件有：nginx、ngx_http_auth_pam_module、pam-mysql、mysql 
+
+1)nginx和ngx_http_auth_pam_module 
+
+ngx_http_auth_pam_module在： 
+
+http://web.iti.upv.es/~sto/nginx/ 
+
+下载 
+
+我测试的nginx版本是0.7.63，在配置选项之后多加一个： 
+Java代码  收藏代码
+--add-module=../ngx_http_auth_pam_module-1.1  
+(nginx在/home/download/nginx-0.7.63/)  
+(ngx_http_auth_pam_module在/home/download/ngx_http_auth_pam_module-1.1/)  
+
+
+编译安装就完成了，编译过程中如果有pam方面的错误，那一般是系统缺少pam-dev，我用的是 debian，需要安装libpam0g-dev这个包： 
+
+Java代码  收藏代码
+apt-get install libpam0g-dev  
+
+
+2)mysql 
+
+在debian系统下简单的安装： 
+
+Java代码  收藏代码
+apt-get install mysql-server-5.0  
+
+3)pam-mysql 
+
+这一步就是取得/lib/security/pam_mysql.so这个文件，我用： 
+
+Java代码  收藏代码
+apt-get install libpam-mysql  
+
+
+就可以，其它系统的下载源码，make一下即可。 
+
+二、配置 
+
+1)配置mysql 
+
+mysql这块需要配置的不多，建一个库、一个表来存储密码，然后配置好访问mysql的访问账号，就可以了： 
+
+Java代码  收藏代码
+create database pam;  
+user pam;  
+create table user (userid varchar(16),passwd varchar(50),primary key (userid))type=innodb default charset=utf8;  
+  
+GRANT SELECT ON pam.* TO pamuser@localhost IDENTIFIED BY '123456';  
+
+
+执行完上面语句之后，得到： 
+引用
+库：pam 
+表：user 
+字段：userid, passwd 
+访问账号：pamuser 
+访问密码：123456
+
+
+2)配置pam-mysql 
+
+在/etc/pam.d/下建一个文件nginx-mysql 
+
+Java代码  收藏代码
+/etc/pam.d/nginx-mysql  
+
+
+内容： 
+
+Java代码  收藏代码
+auth required /lib/security/pam_mysql.so user=pamuser passwd=123456 host=localhost db=pam table=user usercolumn=userid passwdcolumn=passwd crypt=2  
+account required /lib/security/pam_mysql.so user=pamuser passwd=123456 host=localhost db=pam table=user usercolumn=userid passwdcolumn=passwd crypt=2  
+
+
+这个文件的文件名可以自己取，只要和后面的nginx配置对应上即可。配置文件里把mysql的配置对应拷进去，两句话除了开头的一个单词auth和account外，都是一样的。 
+
+配置中的crypt： 
+引用
+0=plain: 明码 
+1=Y: crypt()函数 
+2=mysql: mysql的password()函数 
+3=md5: mysql的md5()函数
+
+
+详细配置可见： 
+
+http://pam-mysql.sourceforge.net/Documentation/package-readme.php 
+
+3)配置nginx 
+
+引用
+server { 
+listen 80; 
+server_name pam.ws.netease.com; 
+
+location / { 
+auth_pam              "mysql pam"; 
+auth_pam_service_name "nginx-mysql"; 
+root /data/html/; 
+} 
+
+} 
+
+auth_pam：提示语 
+auth_pam_service_name：/etc/pam.d/下对应文件的名字 
+
+测试： 
+
+在mysql插入一条记录： 
+
+Java代码  收藏代码
+insert into user values ('abc',password('12345'));  
+
+
+在/data/html/下建一个文件： 
+Java代码  收藏代码
+echo "test" > /data/html/test.html  
+
+
+然后打开页面，输入账号密码，看到test就说明成功了。 
+
+------------------------------- 
+
+注意： 
+
+1) 因为每次请求都会访问mysql认证权限，会对效率有影响，所以不必要的请求，如图片css这些就尽量不要通过认证之后再访问。 
+2) 可根据版本支持新旧password函数，在mysql5也可用配置参数old_passwords=1强制使用旧函数。 
+
+
+For example, to authenticate users against an LDAP server (using the 
+`pam_ldap.so` module) you will use an `/etc/pam.d/nginx` like the following: 
+Java代码  收藏代码
+auth    required     /lib/security/pam_ldap.so  
+account required     /lib/security/pam_ldap.so  
+
+
+If you also want to limit the users from LDAP that can authenticate you can 
+use the `pam_listfile.so` module; to limit who can access resources under 
+`/restricted` add the following to the `nginx.conf` file: 
+引用
+
+  location /restricted { 
+  auth_pam              "Restricted Zone"; 
+  auth_pam_service_name "nginx_restricted"; 
+  }
+
+
+Use the following `/etc/pam.d/nginx_restricted` file: 
+
+Java代码  收藏代码
+auth    required     /lib/security/pam_listfile.so onerr=fail item=user \  
+                     sense=allow file=/etc/nginx/restricted_users  
+auth    required     /lib/security/pam_ldap.so  
+account required     /lib/security/pam_ldap.so  
+
+
+And add the users allowed to authenticate to the `/etc/nginx/restricted_users` 
+(remember that the web server user has to be able to read this file). 

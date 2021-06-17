@@ -1,0 +1,109 @@
+# web dav
+server {
+  listen 9234;
+  error_page 404 /404;
+  error_page 503 /503;
+
+  location / { 
+    root /home/j/feng;
+    dav_methods PUT DELETE MKCOL COPY MOVE;
+    dav_ext_methods PROPFIND OPTIONS;
+    create_full_put_path on; 
+    dav_access user:rw group:r all:r;
+    auth_basic "Authorized Users Only";
+    auth_basic_user_file /home/j/users;
+  }
+}
+
+location / {
+　　dav_methods PUT DELETE MKCOL COPY MOVE;
+　　dav_ext_methods PROPFIND OPTIONS;
+　　create_full_put_path on;
+　　dav_access group:rw all:rw;
+　　root /var/root/;
+　　client_body_temp_path /var/tmp/;
+}
+
+    location / {
+        root /home/swapzone;
+        autoindex on;
+        dav_methods PUT DELETE MKCOL COPY MOVE;
+        dav_ext_methods PROPFIND OPTIONS;
+        create_full_put_path on;
+        dav_access user:rw group:r all:r;
+        auth_basic "Authorized Users Only";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+    }
+
+为Nginx 添加 WebDAV 支持
+在编译Nginx知道有”–with-http_dav_module”这么一个参数，但真正让我要在实际受用于这个功能，说出来有些出人意外–解决使用安卓手机通过SFTP访问Mac OS X的视频资源出现的卡顿问题。
+WebDAV （Web-based Distributed Authoring and Versioning） 一种基于 HTTP 1.1协议的通信协议。它扩展了HTTP 1.1，在GET、POST、HEAD等几个HTTP标准方法以外添加了一些新的方法，使应用程序可直接对Web Server直接读写，并支持写文件锁定(Locking)及解锁(Unlock)，还可以支持文件的版本控制。（更多了解）
+通过在编译时加入“–with-http_dav_module”可以启用对WebDav协议的支持，但要让功能完整，支持客户端的操作，还要引入另一个模块：ngx-dav-ext-module。关于对这个问题的描述，nginx官方文档有些轻描谈写：“WebDAV clients that require additional WebDAV methods to operate will not work with this module.”
+下面是配置过程
+下载ngx-dav-ext-module：
+
+cd /usr/local/src && git clone --recursive ps://github.com/arut/nginx-dav-ext-module">https://github.com/arut/nginx-dav-ext-module
+重新编译nginx:
+
+./configure \
+--prefix=/opt/webserver/nginx \
+--without-http_memcached_module \
+--user=www \
+--group=www \
+--with-http_image_filter_module \
+--with-http_stub_status_module \
+--with-http_ssl_module \
+--with-http_gzip_static_module \
+--with-openssl=/usr/local/src/openssl-1.0.1j \
+--with-zlib=/usr/local/src/zlib-1.2.8 \
+--with-pcre=/usr/local/src/pcre-8.36 \
+--with-http_sub_module \
+--add-module=/usr/local/src/nginx-accesskey-2.0.3 \
+--add-module=/usr/local/src/ngx_http_geoip2_module \
+--with-http_realip_module \
+--with-http_mp4_module \
+--with-http_dav_module \
+--add-module=/usr/local/src/nginx-dav-ext-module
+编译及备份：
+
+#备份原nginx程序文件
+mv /opt/webserver/nginx/sbin/nginx /opt/webserver/nginx/sbin/nginx.bak &&
+\cp objs/nginx /opt/webserver/nginx/sbin/nginx &&
+nginx -t
+修改nginx.conf，大致如下：
+
+ server { 
+  listen 8080;
+  server_name site.com;
+  client_max_body_size 20M;
+   location / {  
+    dav_methods PUT DELETE MKCOL COPY MOVE;
+   dav_ext_methods PROPFIND OPTIONS;
+   dav_access group:rw all:r;
+    root /var/www/dav/;
+   auth_basic "Restricted";
+   auth_basic_user_file /var/www/dav/.htpasswd;
+    }
+   }
+关于认证加密，可以在这里生成，把生成的用户名密码按行写入指定的密码文件，比如上面的/var/www/dav/.htpasswd文件。
+
+
+== nginx-dav-ext-module ==
+NGINX WebDAV missing commands support (PROPFIND & OPTIONS)
+(c) 2012 Arutyunyan Roman (arut@qip.ru)
+
+For full WebDAV support in NGINX you need to turn on standard NGINX 
+WebDAV module (providing partial WebDAV implementation) as well as 
+this module for missing methods
+
+./configure --with-http_dav_module --add-module=<path-to-this-module>
+
+Requirements:
+	libexpat-dev
+
+Example config:
+	location / {
+		dav_methods PUT DELETE MKCOL COPY MOVE;
+		dav_ext_methods PROPFIND OPTIONS;
+		root /var/root/;
+	}

@@ -1,0 +1,56 @@
+nginx+spawn-fcgi安装 2010-02-26 21:11:24
+分类： LINUX
+nginx 安装前先装pcre
+cd ..
+tar zxf pcre-8.00.tar.gz 
+cd pcre-8.00
+./configure 
+make && make install
+ 
+安装nginx 
+cd ..
+tar zxf nginx-0.7.65.tar.gz
+cd nginx-0.7.65
+./configure --prefix=/dicc/nginx --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module
+make && make install
+ 
+nginx启动：
+/dicc/nginx/sbin/nginx
+ 
+安装spawn-fcgi
+cd ..
+tar zxf spawn-fcgi-1.6.3.tar.gz
+cd spawn-fcgi-1.6.3
+./configure --prefix=/dicc/spawn
+make && make install
+spawn-fcgi命令启动：
+/dicc/spawn/bin/spawn-fcgi -a 127.0.0.1 -p 9000 -u fcgi -g fcgi -f /dicc/php/bin/php-cgi -C 50
+ 
+附：
+spawn-fcgi v1.6.3 (ipv6) - spawns FastCGI processes
+ 
+Options:
+ -f       filename of the fcgi-application (deprecated; ignored if
+                is given; needs /bin/sh)
+ -d chdir to directory before spawning
+ -a
+   bind to IPv4/IPv6 address (defaults to 0.0.0.0)
+ -p       bind to TCP-port
+ -s       bind to Unix domain socket
+ -M       change Unix domain socket mode
+ -C   (PHP only) numbers of childs to spawn (default: not setting
+                the PHP_FCGI_CHILDREN environment variable - PHP defaults to 0)
+ -F   number of children to fork (default 1)
+ -P       name of PID-file for spawned process (ignored in no-fork mode)
+ -n             no fork (for daemontools)
+ -v             show version
+ -?, -h         show this help
+(root only)
+ -c chroot to directory
+ -S             create socket before chroot() (default is to create the socket
+                in the chroot)
+ -u       change to user-id
+ -g      change to group-id (default: primary group of user if -u
+                is given)
+ -U       change Unix domain socket owner to user-id
+ -G      change Unix domain socket group to group-id

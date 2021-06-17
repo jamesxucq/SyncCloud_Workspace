@@ -1,0 +1,29 @@
+访问WebDAV服务
+Prev 	Chapter 8. Debian桌面系统	 Next
+8.33. 访问WebDAV服务
+
+WebDAV的全称是“Web-base Distributed Authoring and Versioning”。它是HTTP协议的扩展，允许我们在远程管理和编辑Web服务器上的文件。现在很多Web服务器都支持WebDAV，包括最有名的Apache和Zope。要访问WebDAV服务，需要安装客户端，这里介绍的一个工具叫Cadaver，它是一个字符界面的工具，类似于FTP。支持文件的上传、下载和在线编辑等功能。它是一个自由软件，在GNU GPL协议下发布。
+
+安装方法很简单，使用apt-get install cadaver即可完成。下面介绍一下主要的用法：
+
+连接远程Web服务器
+
+debian:~# cadaver www.ringkee.com
+Authentication required for Zope on server `www.ringkee.com':
+Username: username
+Password: pasword
+dav:/>
+输入用户名和密码即可登录入服务器，使用类似ftp的命令就可以操作服务器上的文件，使用h命令可列出所有的命令。
+
+dav:/> h
+Available commands:
+ ls         cd         pwd        put        get        mget       mput
+ edit       less       mkcol      cat        delete     rmcol      copy
+ move       lock       unlock     discover   steal      showlocks  version
+ checkin    checkout   uncheckout history    label      propnames  chexec
+ propget    propdel    propset    search     set        open       close
+ echo       quit       unset      lcd        lls        lpwd       logout
+ help       describe   about
+Aliases: rm=delete, mkdir=mkcol, mv=move, cp=copy, more=less, quit=exit=bye
+dav:/>
+常用的命令有ls--列出文件，put--上传文件，get--下载文件，cat--显示文件内容，edit--在线编辑文件，quit--退出。

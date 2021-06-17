@@ -1,0 +1,12 @@
+<html>
+<head>
+	<title>osev/csp demo</title>
+</head>
+<body>
+<% int num; 
+	for(num=0x00; 5 > num; num++) {
+%>
+	<p>Hello world. </p>
+<%}%>
+</body>
+</html>

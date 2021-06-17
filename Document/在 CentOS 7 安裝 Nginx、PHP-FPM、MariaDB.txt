@@ -1,0 +1,203 @@
+安装 nginx 
+CentOS 7 没有内建的 nginx，所以先到 nginx 官网  http://nginx.org/en/linux_packages.html#stable ，找到 CentOS 7 的 nginx-release package 档案连结，然后如下安装
+rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+安装后，会自动产生 yum 的 repository 设定(在 /etc/yum.repos.d/nginx.repo)， 
+接下来便可以使用 yum 指令安装 nginx
+yum install nginx
+启动 nginx 
+以前用 chkconfig 管理服务，CentOS 7 改用 systemctl 管理系统服务 
+立即启动
+systemctl start nginx
+查看目前运作状态
+systemctl status nginx
+查看 nginx 服务目前的启动设定
+systemctl list-unit-files | grep nginx
+若是 disabled，可以改成开机自动启动
+systemctl enable nginx
+若有设定防火强，查看防火强运行状态，看是否有开启 nginx 使用的 port
+firewall-cmd --state
+永久开放开启防火强的 http 服务
+firewall-cmd --permanent --zone=public --add-service=http
+firewall-cmd --reload
+列出防火强 public 的设定
+firewall-cmd --list-all --zone=public
+经过以上设定，应该就可以使用浏览器访问 nginx 的预设页面。
+安装 PHP-FPM 
+使用 yum 安装 php、php-fpm、php-mysql
+yum install php php-fpm php-mysql
+查看 php-fpm 服务目前的启动设定 
+systemctl list-unit-files | grep php-fpm
+改成开机自动启动
+systemctl enable php-fpm
+立即启动
+systemctl start php-fpm
+查看目前运作状态
+systemctl status php-fpm
+修改 PHP-FPM listen 的方式 
+若想将 PHP-FPM listen 的方式，改成 unix socket，可以编辑 /etc/php-fpm.d/www.conf 
+将
+listen = 127.0.0.1:9000
+改成
+listen = /var/run/php-fpm/php-fpm.sock
+然后重新启动 php-fpm
+systemctl restart php-fpm
+注：不要改成 listen = /tmp/php-fcgi.sock (将 php-fcgi.sock 设定在 /tmp 底下)， 因为系统产生 php-fcgi.sock 时，会放在 /tmp/systemd-private-*/tmp/php-fpm.sock 随机私有目录下， 除非把 /usr/lib/systemd/system/ 里面的 PrivateTmp=true 设定改成 PrivateTmp=false， 但还是会产生其他问题，所以还是换个位置最方便
+
+删除之前的版本
+# yum remove php*
+rpm 安装 Php7 相应的 yum源
+CentOS/RHEL 7.x:
+# rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm # rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+CentOS/RHEL 6.x:
+# rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
+yum安装php7
+yum install php70w php70w-opcache
+安装其他插件（选装）
+注：如果安装pear，需要安装php70w-devel
+php70w
+php70w-bcmath
+php70w-cli
+php70w-common
+php70w-dba
+php70w-devel
+php70w-embedded
+php70w-enchant
+php70w-fpm
+php70w-gd
+php70w-imap
+php70w-interbase
+php70w-intl
+php70w-ldap
+php70w-mbstring
+php70w-mcrypt
+php70w-mysql
+php70w-mysqlnd
+php70w-odbc
+php70w-opcache
+php70w-pdo
+php70w-pdo_dblib
+php70w-pear
+php70w-pecl-apcu
+php70w-pecl-imagick
+php70w-pecl-xdebug
+php70w-pgsql
+php70w-phpdbg
+php70w-process
+php70w-pspell
+php70w-recode
+php70w-snmp
+php70w-soap
+php70w-tidy
+php70w-xml
+php70w-xmlrp
+编译安装php7
+配置（configure）、编译（make）、安装（make install）
+使用configure --help
+编译安装一定要指定定prefix，这是安装目录，会把所有文件限制在这个目录，卸载时只需要删除那个目录就可以，如果不指定会安装到很多地方，后边删除不方便。
+Configuration: --cache-file=FILE       cache test results in FILE --help                  print this message --no-create             do not create output files --quiet, --silent       do not print `checking...' messages --version               print the version of autoconf that created configure Directory and file names: --prefix=PREFIX         install architecture-independent files in PREFIX [/usr/local] --exec-prefix=EPREFIX   install architecture-dependent files in EPREFIX
+注意
+内存小于1G安装往往会出错，在编译参数后面加上一行内容--disable-fileinfo
+其他配置参数
+--exec-prefix=EXEC-PREFIX
+可以把体系相关的文件安装到一个不同的位置，而不是PREFIX设置的地方．这样做可以比较方便地在不同主机之间共享体系相关的文件
+--bindir=DIRECTORY
+为可执行程序声明目录，缺省是 EXEC-PREFIX/bin
+--datadir=DIRECTORY
+设置所安装的程序需要的只读文件的目录．缺省是 PREFIX/share
+--sysconfdir=DIRECTORY
+用于各种各样配置文件的目录，缺省为 PREFIX/etc
+--libdir=DIRECTORY
+库文件和动态装载模块的目录．缺省是 EXEC-PREFIX/lib
+--includedir=DIRECTORY
+C 和 C++ 头文件的目录．缺省是 PREFIX/include
+--docdir=DIRECTORY
+文档文件，（除 “man（手册页）”以外， 将被安装到这个目录．缺省是 PREFIX/doc
+--mandir=DIRECTORY
+随着程序一起带的手册页 将安装到这个目录．在它们相应的manx子目录里． 缺省是PREFIX/man
+注意: 为了减少对共享安装位置（比如 /usr/local/include） 的污染，configure 自动在 datadir， sysconfdir，includedir， 和 docdir 上附加一个 “/postgresql” 字串， 除非完全展开以后的目录名字已经包含字串 “postgres” 或者 “pgsql”．比如，如果你选择 /usr/local 做前缀，那么 C 的头文件将安装到 /usr/local/include/postgresql， 但是如果前缀是 /opt/postgres，那么它们将 被放进 /opt/postgres/include
+--with-includes=DIRECTORIES
+DIRECTORIES 是一系列冒号分隔的目录，这些目录将被加入编译器的头文件 搜索列表中．如果你有一些可选的包（比如 GNU Readline）安装在 非标淮位置，你就必须使用这个选项，以及可能还有相应的 --with-libraries 选项．
+--with-libraries=DIRECTORIES
+DIRECTORIES 是一系列冒号分隔的目录，这些目录是用于查找库文件的． 如果你有一些包安装在非标淮位置，你可能就需要使用这个选项 （以及对应的--with-includes选项）
+--enable-XXX
+打开XXX支持
+--with-XXX
+制作XXX模块
+
+PHP FPM设定参考
+[global]
+pid = /usr/local/php/var/run/php-fpm.pid
+error_log = /usr/local/php/var/log/php-fpm.log
+[www]
+listen = /var/run/php-fpm/php-fpm.sock
+user = www
+group = www
+pm = dynamic
+pm.max_children = 800
+pm.start_servers = 200
+pm.min_spare_servers = 100
+pm.max_spare_servers = 800
+pm.max_requests = 4000
+rlimit_files = 51200
+listen.backlog = 65536
+;设 65536 的原因是-1 可能不是unlimited
+;说明 http://php.net/manual/en/install.fpm.configuration.php#104172
+slowlog = /usr/local/php/var/log/slow.log
+request_slowlog_timeout = 10
+nginx.conf 设定参考 
+user  nginx;
+worker_processes  8;
+error_log  /var/log/nginx/error.log warn;
+pid  /var/run/nginx.pid;
+events {
+  use epoll;
+  worker_connections  65535;
+}
+worker_rlimit_nofile 65535;
+#若没设定，可能出现错误:65535 worker_connections exceed open file resource limit: 1024
+http {
+  include    /etc/nginx/mime.types;
+  default_type  application/octet-stream;
+  log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+            '$status $body_bytes_sent "$http_referer" '
+            '"$http_user_agent" "$http_x_forwarded_for"';
+  access_log  /var/log/nginx/access.log  main;
+  sendfile  on;
+  tcp_nopush  on;
+  keepalive_timeout  65;
+  server_names_hash_bucket_size 128;
+  client_header_buffer_size 32k;
+  large_client_header_buffers 4 32k;
+  client_max_body_size 8m;
+  server_tokens  off;
+  client_body_buffer_size  512k;
+  # fastcgi
+  fastcgi_connect_timeout 300;
+  fastcgi_send_timeout 300;
+  fastcgi_read_timeout 300;
+  fastcgi_buffer_size 64k;
+  fastcgi_buffers 4 64k;
+  fastcgi_busy_buffers_size 128k;
+  fastcgi_temp_file_write_size 128k;
+  fastcgi_intercept_errors on;
+  #gzip (说明 http://nginx.org/en/docs/http/ngx_http_gzip_module.html)
+  gzip  off;
+  gzip_min_length  1k;#1k以上才压缩
+  gzip_buffers 32  4k;
+    #http://stackoverflow.com/questions/4888067/how-to-get-linux-kernel-page-size-programatically
+    #使用 getconf PAGESIZE 取得系统 one memory page size，
+  gzip_http_version  1.0;
+  gzip_comp_level  2;
+  gzip_types  text/css text/xml application/javascript application/atom+xml application/rss+xml text/plain application/json;
+    #查看 nginx 的 mime.types 档案(/etc/nginx/mime.types),里面有各种类型的定义
+  gzip_vary  on;
+  include /etc/nginx/conf.d/*.conf;
+}
+若出现出现错误:setrlimit(RLIMIT_NOFILE, 65535) failed (1: Operation not permitted) 
+先查看目前系统的设定值
+ulimit -n
+若设定值太小，修改 /etc/security/limits.conf
+vi /etc/security/limits.conf
+加上或修改以下两行设定
+* soft nofile 65535
+* hard nofile 65535

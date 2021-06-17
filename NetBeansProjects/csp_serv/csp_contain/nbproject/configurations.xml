@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="97">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles" displayName="头文件" projectFiles="true">
+      <logicalFolder name="f1" displayName="third_party" projectFiles="true">
+        <itemPath>../third_party/access_log.h</itemPath>
+        <itemPath>../third_party/logger.h</itemPath>
+        <itemPath>../third_party/path_hmap.h</itemPath>
+        <itemPath>../third_party/stri_utili.h</itemPath>
+        <itemPath>../third_party/tiny_pool.h</itemPath>
+      </logicalFolder>
+      <itemPath>base_pool.h</itemPath>
+      <itemPath>contain_macro.h</itemPath>
+      <itemPath>error_code.h</itemPath>
+      <itemPath>file_utili.h</itemPath>
+      <itemPath>map_path.h</itemPath>
+      <itemPath>memo_pool.h</itemPath>
+      <itemPath>parse_conf.h</itemPath>
+      <itemPath>virtu_path.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
+      <logicalFolder name="f1" displayName="third_party" projectFiles="true">
+        <itemPath>../third_party/access_log.c</itemPath>
+        <itemPath>../third_party/logger.c</itemPath>
+        <itemPath>../third_party/path_hmap.c</itemPath>
+        <itemPath>../third_party/stri_utili.c</itemPath>
+        <itemPath>../third_party/tiny_pool.c</itemPath>
+      </logicalFolder>
+      <itemPath>base_pool.c</itemPath>
+      <itemPath>csp_contain.cpp</itemPath>
+      <itemPath>file_utili.c</itemPath>
+      <itemPath>map_path.c</itemPath>
+      <itemPath>parse_conf.c</itemPath>
+      <itemPath>virtu_path.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles" displayName="资源文件" projectFiles="true">
+      <itemPath>csp_contain.xml</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="测试文件"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="重要文件"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <incDir>
+            <pElem>../third_party</pElem>
+            <pElem>/usr/include/mysql</pElem>
+          </incDir>
+          <commandLine>-Wall -D_DEBUG -D_LARGEFILE64_SOURCE</commandLine>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>../third_party</pElem>
+            <pElem>/usr/include/mysql</pElem>
+          </incDir>
+          <commandLine>-Wall -D_DEBUG -D_LARGEFILE64_SOURCE</commandLine>
+        </ccTool>
+        <linkerTool>
+          <commandLine>-lfcgi -ldl -lxml2 -lqdecoder -lmysqlclient -L/usr/lib64/mysql</commandLine>
+        </linkerTool>
+      </compileType>
+      <item path="../third_party/access_log.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../third_party/access_log.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../third_party/logger.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../third_party/logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../third_party/path_hmap.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../third_party/path_hmap.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../third_party/stri_utili.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../third_party/stri_utili.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../third_party/tiny_pool.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../third_party/tiny_pool.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="base_pool.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="base_pool.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="contain_macro.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="csp_contain.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="csp_contain.xml" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="error_code.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="file_utili.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="file_utili.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="map_path.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="map_path.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="memo_pool.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="parse_conf.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parse_conf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="virtu_path.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="virtu_path.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+          <incDir>
+            <pElem>../third_party</pElem>
+            <pElem>/usr/include/mysql</pElem>
+          </incDir>
+          <commandLine>-Wall -D_DEBUG -D_LARGEFILE64_SOURCE</commandLine>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+        <linkerTool>
+          <commandLine>-lfcgi -ldl -lxml2 -lmysqlclient -L/usr/lib64/mysql</commandLine>
+        </linkerTool>
+      </compileType>
+      <item path="../third_party/access_log.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../third_party/access_log.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../third_party/logger.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../third_party/logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../third_party/path_hmap.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../third_party/path_hmap.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../third_party/stri_utili.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../third_party/stri_utili.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../third_party/tiny_pool.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../third_party/tiny_pool.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="base_pool.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="base_pool.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="contain_macro.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="csp_contain.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="csp_contain.xml" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="error_code.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="file_utili.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="file_utili.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="map_path.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="map_path.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="memo_pool.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="parse_conf.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parse_conf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="virtu_path.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="virtu_path.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

@@ -1,0 +1,2 @@
+auth required pam_mysql.so user=root passwd=root host=127.0.0.1 db=pam table=user usercolumn=userid passwdcolumn=passwd crypt=0  
+account required pam_mysql.so user=root passwd=root host=127.0.0.1 db=pam table=user usercolumn=userid passwdcolumn=passwd crypt=0  

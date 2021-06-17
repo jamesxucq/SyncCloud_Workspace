@@ -1,0 +1,35 @@
+Nginx 开启 debug 日志的办法
+2013-09-12 17:30 20258人阅读 评论(0) 收藏 举报
+ 分类： 服务集群（16）   安全防御（12）   性能优化（82）   RTMP服务（54）  
+        译序：一般来讲，Nginx 的错误日志级别是 error，作为 Nginx 用户来讲，你设置成 info 就足够用了。
+        但有时有些难以挖掘的 bug，需要看到更详细的 debug 级别的日志，这时候，单单把 error_log 级别设置成 debug 是不行的，Nginx 记录下来的还是 info 级别以上的信息。你需要激活 Nginx 的 debug 日志才可以得到 debug 级别的日志信息。本文简要介绍了 Nginx debug 日志的激活和配置使用。官方正文如下：
+        要激活 debug 日志，Nginx 在构建时需要配置为支持 debug：
+./configure --with-debug ...
+        然后可以通过 error_log 指令设置 debug 级别：
+error_log /path/to/log debug;
+        Windows 下的 Nginx 的二进制版本一般都支持 debug 日志，因此只需设置 debug 级别即可。
+        注意如果你重新指定日志时没有配置 debug 级别的话，将会禁用 debug 日志。在下面的例子中，在 server 层面上重新指定的日志将会禁用这台服务器的 debug 日志：
+error_log /path/to/log debug;
+
+
+http {
+    server {
+        error_log /path/to/log;
+        ...
+        为了避免这种现象的发生，要么你就注释掉重新定义的那行日志，要么你就在那行也加上 debug 级别：
+error_log /path/to/log debug;
+
+
+http {
+    server {
+        error_log /path/to/log debug;
+        ...
+        也可以只为特定的客户端地址发来的请求开启 debug 日志：
+error_log /path/to/log;
+
+
+events {
+    debug_connection 192.168.1.1;
+    debug_connection 192.168.10.0/24;
+}
+原文链接：http://nginx.org/en/docs/debugging_log.html。

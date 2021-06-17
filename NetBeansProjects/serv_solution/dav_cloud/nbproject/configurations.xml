@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="97">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles" displayName="头文件" projectFiles="true">
+      <itemPath>anchor.h</itemPath>
+      <itemPath>auth_reply.h</itemPath>
+      <itemPath>auth_socks.h</itemPath>
+      <itemPath>auth_utili.h</itemPath>
+      <itemPath>base64.h</itemPath>
+      <itemPath>capacity.h</itemPath>
+      <itemPath>dav_cloud.h</itemPath>
+      <itemPath>dav_macro.h</itemPath>
+      <itemPath>dav_stru.h</itemPath>
+      <itemPath>encoding.h</itemPath>
+      <itemPath>file_utili.h</itemPath>
+      <itemPath>logger.h</itemPath>
+      <itemPath>md5.h</itemPath>
+      <itemPath>parsing.h</itemPath>
+      <itemPath>query_xml.h</itemPath>
+      <itemPath>status_xml.h</itemPath>
+      <itemPath>stri_utili.h</itemPath>
+      <itemPath>versi_utili.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
+      <itemPath>anchor.c</itemPath>
+      <itemPath>auth_socks.c</itemPath>
+      <itemPath>auth_utili.c</itemPath>
+      <itemPath>base64.c</itemPath>
+      <itemPath>capacity.c</itemPath>
+      <itemPath>dav_cloud.c</itemPath>
+      <itemPath>encoding.c</itemPath>
+      <itemPath>file_utili.c</itemPath>
+      <itemPath>logger.c</itemPath>
+      <itemPath>md5.c</itemPath>
+      <itemPath>parsing.c</itemPath>
+      <itemPath>query_xml.c</itemPath>
+      <itemPath>status_xml.c</itemPath>
+      <itemPath>stri_utili.c</itemPath>
+      <itemPath>versi_utili.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles" displayName="资源文件" projectFiles="true">
+      <itemPath>dav_cloud.conf</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="测试文件"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="重要文件"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="2">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <incDir>
+            <pElem>/usr/include/mysql</pElem>
+          </incDir>
+          <commandLine>-D_DEBUG -D_LARGEFILE64_SOURCE -D_FILEOFFSET_BITS==64</commandLine>
+        </cTool>
+      </compileType>
+      <item path="anchor.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="anchor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="auth_reply.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="auth_socks.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="auth_socks.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="auth_utili.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="auth_utili.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="base64.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="base64.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="capacity.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="capacity.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dav_cloud.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="dav_cloud.conf" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dav_cloud.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dav_macro.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dav_stru.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="encoding.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="encoding.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="file_utili.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="file_utili.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="logger.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="md5.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="md5.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="parsing.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parsing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="query_xml.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="query_xml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="status_xml.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="status_xml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="stri_utili.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="stri_utili.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="versi_utili.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="versi_utili.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="2">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+          <incDir>
+            <pElem>/usr/include/mysql</pElem>
+          </incDir>
+          <commandLine>-Wall -D_DEBUG -D_LARGEFILE64_SOURCE -D_FILEOFFSET_BITS==64</commandLine>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="anchor.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="anchor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="auth_reply.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="auth_socks.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="auth_socks.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="auth_utili.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="auth_utili.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="base64.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="base64.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="capacity.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="capacity.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dav_cloud.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="dav_cloud.conf" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dav_cloud.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dav_macro.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dav_stru.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="encoding.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="encoding.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="file_utili.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="file_utili.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="logger.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="md5.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="md5.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="parsing.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parsing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="query_xml.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="query_xml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="status_xml.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="status_xml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="stri_utili.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="stri_utili.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="versi_utili.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="versi_utili.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

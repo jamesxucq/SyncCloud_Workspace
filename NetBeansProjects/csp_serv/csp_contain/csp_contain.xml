@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CSPContain Version="1.2.1">
+    <CSP-FPM>
+        <Fcgi-app>Default</Fcgi-app>
+        <User Group="root">root</User>
+        <Address Port="9000">127.0.0.1</Address>
+        <Childs>1</Childs>
+        <!-- UnixDomain>/tmp/csp-cgi.sock</UnixDomain -->
+        <PidFile>Default</PidFile>
+        <WorkingDirectory>/</WorkingDirectory>
+    </CSP-FPM>
+    <DB-pool Avail="Disable">
+        <Address Port="3306">127.0.0.1</Address>
+        <DBName>AuthDB</DBName>
+        <User Name="root" Password="root"/>
+        <ReconTimeOut>120</ReconTimeOut>
+    </DB-pool>
+    <!-- MEM-pool Avail="Enable" Pool-size="16k" Reset-rate="32"/ -->
+    <LogConfig>
+        <RuntimeLog DebugLevel="MAX">Default</RuntimeLog>
+        <AccessLog>Default</AccessLog>
+    </LogConfig>
+    <Path-map CSP-path="/data/cloud_csp">
+        <CSP-lib LibName="~/login.so">
+            <Virtu-path CSP-name="csp_login.csp">/index.csp</Virtu-path>
+            <Virtu-path CSP-name="show_time.csp">/login_show.csp</Virtu-path>
+        </CSP-lib>
+        <CSP-lib LibName="~/hello.so">
+            <Virtu-path CSP-name="csp_login.csp">/hello_login.csp</Virtu-path>
+            <Virtu-path CSP-name="show_time.csp">/hello_show.csp</Virtu-path>
+        </CSP-lib>
+    </Path-map>
+    <Path-map CSP-path="/data/sync_csp">
+        <CSP-lib LibName="~/login.so">
+            <Virtu-path CSP-name="csp_login.csp">/sync_login.csp</Virtu-path>
+            <Virtu-path CSP-name="show_time.csp">/sync_show.csp</Virtu-path>
+        </CSP-lib>
+    </Path-map>	
+</CSPContain>

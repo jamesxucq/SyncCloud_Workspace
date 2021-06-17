@@ -1,0 +1,6 @@
+数据库选择mysql或者mongodb
+web端用户目录映射
+多用户化
+用户的操作记录在sync-serv-t的结构体中
+web端操作和client端操作加锁互斥
+修改删除备份web端操作
